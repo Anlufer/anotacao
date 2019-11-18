@@ -3,19 +3,28 @@ package br.com.anderson.main;
 import java.io.IOException;
 
 import br.com.anderson.json.AnotacaoHandler;
+import br.com.anderson.menu.Menu;
 import br.com.anderson.model.Anotacao;
 
 public class AnotacaoApp {
 
 	public static void main(String[] args) throws IOException {
-		AnotacaoHandler anotacaoHandler = new AnotacaoHandler();
+		/*AnotacaoHandler anotacaoHandler = new AnotacaoHandler();
 		
-		Anotacao anotacao = new Anotacao("meu título 4", "corpo 3");
+		Anotacao anotacao = new Anotacao("nova anotacao", "meu corpo novo");
 		anotacaoHandler.adicionarAnotacao(anotacao);
 		
-		//testar aqui o método removerAnotacao
+		anotacaoHandler.removerAnotacao("xpto");
 		
-		System.out.println(anotacaoHandler.getTodasAnotacoes());
+		anotacaoHandler.alterarAnotacao("anotacao-arquivo-1", "kajflajflkajflka");
+		//descomentar linha acima quando criar esse m�todo na classe AnotacaoHandler. Aqui eh somente a chamada.
+		
+		anotacaoHandler.listarAnotacao();
+		
+		System.out.println(anotacaoHandler.getTodasAnotacoes());*/
+		
+		Menu menu = new Menu();
+		menu.mostrarMenu();
 	}
 
 }

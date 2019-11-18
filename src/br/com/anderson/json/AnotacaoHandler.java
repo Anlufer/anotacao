@@ -14,56 +14,121 @@ import com.google.gson.reflect.TypeToken;
 import br.com.anderson.model.Anotacao;
 
 public class AnotacaoHandler {
-	
+
 	private Gson gson;
-	private String caminhoArquivoJson = "/home/bruno/eclipse-2019â€‘06-workspace/anotacoes/dados/anotacoes.json";
-	
+	private String caminhoArquivoJson = "C:\\Users\\anderfer\\Desktop\\Pessoais\\Projetos Eclipse\\anotacao-master\\dados\\anotacoes.json";
+
 	public AnotacaoHandler() {
 		gson = new Gson();
 	}
-	
+
 	public void adicionarAnotacao(Anotacao anotacao) throws IOException {
-		
+
 		ArrayList<Anotacao> anotacoes = getTodasAnotacoes();
 		boolean achou = false;
-		
-		for(Anotacao a : anotacoes) {
-			if(a.getTitulo().equals(anotacao.getTitulo())) {
+
+		for (Anotacao a : anotacoes) {
+			if (a.getTitulo().equals(anotacao.getTitulo())) {
 				achou = true;
 				break;
 			}
 		}
-		
-		if(achou == true) {
+
+		if (achou == true) {
 			System.out.println("Titulo ja existente");
-		}else {			
+		} else {
 			anotacoes.add(anotacao);
 			gravarAnotacoes(anotacoes);
 			System.out.println("Anotacao adicionada com sucesso");
 		}
+
+	}
+
+	public void removerAnotacao(String titulo) throws IOException {
+
+		ArrayList<Anotacao> anotacoes = getTodasAnotacoes();
+//		boolean achou = false;		
+		int tamanho = anotacoes.size();
+
+		for (int i = 0; i < anotacoes.size(); i++) {
+			Anotacao a = anotacoes.get(i);
+
+			if (a.getTitulo().equals(titulo)) {
+				anotacoes.remove(i);
+				gravarAnotacoes(anotacoes);
+//				achou = true;
+			}
+		}
+		if (tamanho == anotacoes.size()) {
+			System.out.println("Titulo não encontrado");
+		}
+
+//		if(achou == false) {
+//			System.out.println("Titulo não existe");
+//		}
+	}
+	
+	//1-criar método alterarAnotacao AQUI que recebe dois parâmetros, o primeiro é o título existente e o segundo o corpo novo
+	//2-pegar lista de anotações usando getTodasAnotacoes()
+	//3-iterar na lista verificando se encontra a anotação com mesmo título do primeiro parâmetro recebido
+	//4-se encontrar colocar o corpo novo(segundo parâmetro) através do método set. Chamar método set na lista para substituir uma anotação pela outra.
+	//5-gravar lista atualizada no arquivo usando método gravarAnotacoes
+	//6-Testar todo trabalho executando o programa.
+	public void alterarAnotacao(String titulo, String corpo) throws IOException {
+		ArrayList<Anotacao> anotacoes = getTodasAnotacoes();
+		boolean achou = false;
+		for (int i = 0; i < anotacoes.size(); i++) {
+			Anotacao a = anotacoes.get(i);
+			if (a.getTitulo().equals(titulo)) {
+				a.setCorpo(corpo);
+				gravarAnotacoes(anotacoes);
+				achou = true;
+			}
+		}
 		
-	}
-	
-	public void removerAnotacao(String titulo) {
-		//1-iterar usando for na lista de todas anotaÃ§Ãµes(usa o mÃ©todo getTodasAnotacoes para pegar a lista)
-		//2-verificar se algum item da lista tem esse titulo passado como argumento e remover ele da lista
-		//3-se o tÃ­tulo nÃ£o existir exibe mensagem de que nÃ£o existe
-		//4-grava a lista atualizada sem o item removido no arquivo json
-	}
-	
+		if(achou == false) {
+		System.out.println("Titulo não alterado");
+		}	
+	}	
+
 	public void gravarAnotacoes(ArrayList<Anotacao> anotacoes) throws IOException {
 		FileWriter fileWriter = new FileWriter(caminhoArquivoJson);
 		gson.toJson(anotacoes, fileWriter);
 		fileWriter.flush();
 		fileWriter.close();
 	}
-	
-	public ArrayList<Anotacao> getTodasAnotacoes() throws FileNotFoundException{
-		BufferedReader bufferedReader = new BufferedReader(
-				new FileReader(caminhoArquivoJson));
-		Type type = new TypeToken<ArrayList<Anotacao>>() {}.getType();
+
+	public ArrayList<Anotacao> getTodasAnotacoes() throws FileNotFoundException {
+		BufferedReader bufferedReader = new BufferedReader(new FileReader(caminhoArquivoJson));
+		Type type = new TypeToken<ArrayList<Anotacao>>() {
+		}.getType();
 		ArrayList<Anotacao> anotacoes = gson.fromJson(bufferedReader, type);
 		return anotacoes;
 	}
 
+	public void listarAnotacao() throws FileNotFoundException {		
+		ArrayList<Anotacao> anotacoes = getTodasAnotacoes();
+		for (int i = 0; i < anotacoes.size(); i++) {
+			Anotacao a = anotacoes.get(i);
+			System.out.println(a);
+		}
+	}
+
+	//TODO: fazer um método AQUI chamado buscarPorNome que recebe o título de um anotação e imprime ela. Chamar ele lá no menu
+	public void buscaPorNome(String titulo) throws IOException {
+		ArrayList<Anotacao> anotacoes = getTodasAnotacoes();
+		boolean achou = false;
+		for (int i = 0; i < anotacoes.size(); i++) {
+			Anotacao a = anotacoes.get(i);
+			if (a.getTitulo().equals(titulo)) {
+				System.out.println(titulo);
+				achou = true;
+			}
+		}
+		
+		if(achou == false) {
+		System.out.println("Titulo não encontrado");
+		}	
+		
+	}
 }
